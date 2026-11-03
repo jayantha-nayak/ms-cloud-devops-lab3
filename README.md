@@ -151,6 +151,88 @@ Paste the lines that show the image change, and the `Plan:` line.
 
 ```
 
+kubernetes_deployment_v1.hello: Refreshing state... [id=default/hello-app]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
+following symbols:
+  + create
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # kubernetes_deployment_v1.hello will be updated in-place
+  ~ resource "kubernetes_deployment_v1" "hello" {
+        id               = "default/hello-app"
+        # (1 unchanged attribute hidden)
+
+      ~ spec {
+            # (5 unchanged attributes hidden)
+
+          ~ template {
+              ~ spec {
+                    # (18 unchanged attributes hidden)
+
+                  ~ container {
+                      ~ image                      = "shripada/hello-app:v1" -> "shripada/hello-app:v2"
+                        name                       = "hello-app"
+                        # (10 unchanged attributes hidden)
+
+                        # (2 unchanged blocks hidden)
+                    }
+                }
+
+                # (1 unchanged block hidden)
+            }
+
+            # (2 unchanged blocks hidden)
+        }
+
+        # (1 unchanged block hidden)
+    }
+
+  # kubernetes_service_v1.hello will be created
+  + resource "kubernetes_service_v1" "hello" {
+      + id                     = (known after apply)
+      + status                 = (known after apply)
+      + wait_for_load_balancer = true
+
+      + metadata {
+          + generation       = (known after apply)
+          + name             = "hello-app"
+          + namespace        = "default"
+          + resource_version = (known after apply)
+          + uid              = (known after apply)
+        }
+
+      + spec {
+          + allocate_load_balancer_node_ports = true
+          + cluster_ip                        = (known after apply)
+          + cluster_ips                       = (known after apply)
+          + external_traffic_policy           = (known after apply)
+          + health_check_node_port            = (known after apply)
+          + internal_traffic_policy           = (known after apply)
+          + ip_families                       = (known after apply)
+          + ip_family_policy                  = (known after apply)
+          + publish_not_ready_addresses       = false
+          + selector                          = {
+              + "app" = "hello-app"
+            }
+          + session_affinity                  = "None"
+          + type                              = "LoadBalancer"
+
+          + port {
+              + node_port   = (known after apply)
+              + port        = 8080
+              + protocol    = "TCP"
+              + target_port = "80"
+            }
+
+          + session_affinity_config (known after apply)
+        }
+    }
+
+Plan: 1 to add, 1 to change, 0 to destroy.
+
 ```
 
 ## Part 3: plan that found the drift after `kubectl scale`
